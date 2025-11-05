@@ -30,7 +30,7 @@ def get_package_info(level):
     return packages.get(str(level), packages.get("1"))
 
 def get_accessible_guides(level):
-    # Example guides by level (replace with your real guide data)
+    # All guides are now available to everyone
     all_guides = [
         {"id": 1, "title": "Domain Mastery 101", "description": "How to choose, register & optimize domains for maximum profit", "level": 1},
         {"id": 2, "title": "AI-Powered Landing Pages", "description": "Create high-converting landing pages with AI", "level": 1},
@@ -38,9 +38,8 @@ def get_accessible_guides(level):
         {"id": 4, "title": "Advanced Traffic Strategies", "description": "Drive massive traffic to your offers", "level": 3},
         {"id": 5, "title": "Empire Building", "description": "Scale your business to the next level", "level": 4}
     ]
-    return [
-        {**g, "locked": g["level"] > level} for g in all_guides
-    ]
+    # No guides are locked
+    return [{**g, "locked": False} for g in all_guides]
 
 def add_to_queue(email, referrer=None):
     queue_data = load_json(QUEUE_FILE)
@@ -165,12 +164,23 @@ def dashboard():
         if person['email'] == email:
             queue_position = i + 1
             break
+    # Coey's welcome message and instructions
+    coey_message = (
+        "<b>Welcome to RizzosAI!</b><br>"
+        "Are you ready to earn with RizzosAI? Start by promoting your unique link and forwarding your domain name to your RizzosAI referral link so you get paid for your efforts.<br><br>"
+        "<b>How to Get Paid:</b><br>"
+        "1. Forward your domain to your RizzosAI referral link.<br>"
+        "2. Set up your Stripe account in your profile to receive instant payments.<br>"
+        "3. Watch the training videos below for step-by-step instructions on promoting, setting up your domain, and connecting Stripe.<br><br>"
+        "Let's get started and make money together!"
+    )
     return render_template('dashboard.html',
         customer=customer,
         package_info=package_info,
         accessible_guides=accessible_guides,
         commissions=customer_commissions,
-        queue_position=queue_position)
+        queue_position=queue_position,
+        coey_message=coey_message)
 
 @app.route('/training')
 def training():
@@ -193,12 +203,15 @@ def queue_dashboard():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        username = request.form.get('username', '').strip()
         email = request.form['email']
-        username = request.form['username']
         password = request.form['password']
         referrer = request.form.get('referrer')
         customers = load_json(CUSTOMERS_FILE)
-        # Check for unique email and username
+        # Check for unique and non-empty username
+        if not username:
+            flash('Username is required.', 'error')
+            return redirect(url_for('register'))
         if email in customers or any(u.get('username') == username for u in customers.values()):
             flash('Email or username already registered.', 'error')
             return redirect(url_for('register'))

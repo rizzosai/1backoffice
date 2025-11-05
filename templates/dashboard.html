@@ -9,6 +9,7 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .header { background: #fff; border-radius: 12px; padding: 30px; margin-bottom: 20px; text-align: center; border: 2px solid #e60000; }
         .package-badge { background: linear-gradient(135deg, #e60000, #001f5b); color: white; padding: 10px 20px; border-radius: 25px; display: inline-block; font-weight: bold; margin-bottom: 15px; }
+        .coey-message { background: #f5faff; border-left: 6px solid #e60000; border-radius: 8px; padding: 24px 20px; margin-bottom: 24px; font-size: 1.1em; color: #222; box-shadow: 0 2px 8px rgba(0,31,91,0.06); }
         .nav-menu { display: flex; justify-content: center; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
         .nav-button { padding: 12px 24px; background-color: #001f5b; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: all 0.3s; }
         .nav-button:hover { background-color: #e60000; transform: translateY(-2px); }
@@ -17,14 +18,19 @@
         .stat-number { font-size: 2em; font-weight: bold; color: #e60000; }
         .stat-label { color: #666; font-size: 0.9em; }
         .coming-soon { background: white; border-radius: 12px; padding: 40px; text-align: center; border: 2px solid #e60000; color: #666; }
+        .backoffice-banner { font-size: 1.3em; color: #e60000; font-weight: bold; margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
+            <div class="backoffice-banner">You are in the RizzosAI Backoffice</div>
             <div class="package-badge">{{ package_info.name }} - ${{ package_info.price }}/day</div>
-            <h1>Welcome to Your RizzosAI Backoffice</h1>
-            <p>Username: <strong>{{ customer.email }}</strong> | Package Level: <strong>{{ package_info.name }}</strong></p>
+            <h1>Welcome, <span>{{ customer.username if customer.username else customer.email }}</span>!</h1>
+            <p>Package Level: <strong>{{ package_info.name }}</strong></p>
+        </div>
+        <div class="coey-message">
+            {{ coey_message|safe }}
         </div>
         <div class="nav-menu">
             <a href="/dashboard" class="nav-button">🏠 Dashboard</a>

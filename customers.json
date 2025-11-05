@@ -3,6 +3,15 @@
     "password": "admin123",
     "package_level": 4,
     "signup_date": "2025-11-06T00:00:00",
-    "is_admin": true
+    "is_admin": true,
+    "username": "rizzosai"
+  },
+  "top@affiliate.com": {
+    "password": "topsecret",
+    "package_level": 4,
+    "signup_date": "2025-11-06T00:00:00",
+    "is_admin": false,
+    "username": "topaffiliate",
+    "referrer": null
   }
 }
