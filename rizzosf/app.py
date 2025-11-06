@@ -20,7 +20,64 @@ USERS = {
     "vip": {"password": "password123", "role": "user", "plan": "VIP"}
 }
 
-USER_DASHBOARD_TEMPLATE = '''
+
+# Login page template
+LOGIN_TEMPLATE = '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - RizzosAI Affiliate Backoffice</title>
+    <style>
+        body {
+            background: linear-gradient(90deg, #e63946 0%, #ffffff 50%, #457b9d 100%);
+            color: #222;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        h2 {
+            color: #e63946;
+        }
+        .error {
+            color: #e63946;
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background: #457b9d;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background: #e63946;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Affiliate Login</h2>
         {% if error %}<p class="error">{{ error }}</p>{% endif %}
         <form method="post">
             <label>Username:</label><br>
@@ -34,7 +91,7 @@ USER_DASHBOARD_TEMPLATE = '''
 </html>
 '''
 
-ADMIN_DASHBOARD_TEMPLATE = '''
+# User dashboard template
 USER_DASHBOARD_TEMPLATE = '''
 <!DOCTYPE html>
 <html lang="en">
@@ -86,6 +143,9 @@ USER_DASHBOARD_TEMPLATE = '''
 </body>
 </html>
 '''
+
+# Admin dashboard template
+ADMIN_DASHBOARD_TEMPLATE = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
