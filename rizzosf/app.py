@@ -30,7 +30,7 @@ LOGIN_TEMPLATE = '''
     <title>Login - RizzosAI Affiliate Backoffice</title>
     <style>
         body {
-            background: linear-gradient(90deg, #e63946 0%, #ffffff 50%, #457b9d 100%);
+            background: linear-gradient(90deg, #e63946 0%%, #ffffff 50%%, #457b9d 100%%);
             color: #222;
             font-family: Arial, sans-serif;
             margin: 0;
@@ -100,7 +100,7 @@ USER_DASHBOARD_TEMPLATE = '''
     <title>User Dashboard</title>
     <style>
         body {
-            background: linear-gradient(90deg, #e63946 0%, #ffffff 50%, #457b9d 100%);
+            background: linear-gradient(90deg, #e63946 0%%, #ffffff 50%%, #457b9d 100%%);
             color: #222;
             font-family: Arial, sans-serif;
             margin: 0;
@@ -153,7 +153,7 @@ ADMIN_DASHBOARD_TEMPLATE = '''
     <title>Admin Dashboard</title>
     <style>
         body {
-            background: linear-gradient(90deg, #e63946 0%, #ffffff 50%, #457b9d 100%);
+            background: linear-gradient(90deg, #e63946 0%%, #ffffff 50%%, #457b9d 100%%);
             color: #222;
             font-family: Arial, sans-serif;
             margin: 0;
