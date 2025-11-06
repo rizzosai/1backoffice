@@ -19,7 +19,9 @@ USERS = {
     "pro": {"password": "password123", "role": "user", "plan": "Pro"},
     "elite": {"password": "password123", "role": "user", "plan": "Elite"},
     "vip": {"password": "password123", "role": "user", "plan": "VIP"}
-}
+}git rm app.py
+git commit -m "Remove app.py"
+git push origin main
 
 USER_DASHBOARD_TEMPLATE = '''
         {% if error %}<p class="error">{{ error }}</p>{% endif %}
