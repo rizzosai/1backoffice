@@ -7,67 +7,20 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'changeme')
 
-ADMIN_USERNAME = os.getenv('ADMIN_USERNAME', 'admin')
-ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'password')
+# Hardcoded users: username -> dict with password, role, and plan
+USERS = {
+    "admin": {"password": "password123", "role": "admin"},
+    "admin1": {"password": "password123", "role": "user", "plan": "$29 Basic Starter"},
+    "admin2": {"password": "password123", "role": "user", "plan": "$99 Pro"},
+    "admin3": {"password": "password123", "role": "user", "plan": "$249 Elite"},
+    "admin4": {"password": "password123", "role": "user", "plan": "$499 VIP"},
+    "basic": {"password": "password123", "role": "user", "plan": "Basic Starter"},
+    "pro": {"password": "password123", "role": "user", "plan": "Pro"},
+    "elite": {"password": "password123", "role": "user", "plan": "Elite"},
+    "vip": {"password": "password123", "role": "user", "plan": "VIP"}
+}
 
-LOGIN_TEMPLATE = '''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Login</title>
-    <style>
-        body {
-            background: linear-gradient(90deg, #e63946 0%, #ffffff 50%, #457b9d 100%);
-            color: #222;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .login-container {
-            max-width: 400px;
-            margin: 60px auto;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 30px;
-            text-align: center;
-        }
-        h2 {
-            color: #e63946;
-        }
-        label {
-            color: #457b9d;
-            font-weight: bold;
-        }
-        input[type="text"], input[type="password"] {
-            width: 80%;
-            padding: 8px;
-            margin: 8px 0;
-            border: 1px solid #457b9d;
-            border-radius: 4px;
-        }
-        input[type="submit"] {
-            background: #457b9d;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background: #e63946;
-        }
-        .error {
-            color: #e63946;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="login-container">
-        <h2>Admin Login</h2>
+USER_DASHBOARD_TEMPLATE = '''
         {% if error %}<p class="error">{{ error }}</p>{% endif %}
         <form method="post">
             <label>Username:</label><br>
@@ -81,7 +34,58 @@ LOGIN_TEMPLATE = '''
 </html>
 '''
 
-DASHBOARD_TEMPLATE = '''
+ADMIN_DASHBOARD_TEMPLATE = '''
+USER_DASHBOARD_TEMPLATE = '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            background: linear-gradient(90deg, #e63946 0%, #ffffff 50%, #457b9d 100%);
+            color: #222;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        h2 {
+            color: #e63946;
+        }
+        .plan {
+            background: #f1faee;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, {{ username }}!</h2>
+        <div class="plan">
+            <b>Package Level:</b> {{ plan }}
+        </div>
+        <p>Welcome to RizzosAI!<br>
+        Are you ready to earn with RizzosAI? Start by promoting your unique link and forwarding your domain name to your RizzosAI referral link so you get paid for your efforts.</p>
+        <ul>
+            <li>Forward your domain to your RizzosAI referral link.</li>
+            <li>Set up your Stripe account in your profile to receive instant payments.</li>
+            <li>Watch the training videos below for step-by-step instructions on promoting, setting up your domain, and connecting Stripe.</li>
+        </ul>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</body>
+</html>
+'''
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -200,6 +204,8 @@ DASHBOARD_TEMPLATE = '''
 </html>
 '''
 
+
+# Login route
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if session.get('logged_in'):
@@ -208,19 +214,33 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        user = USERS.get(username)
+        if user and password == user['password']:
             session['logged_in'] = True
+            session['username'] = username
+            session['role'] = user['role']
+            if user['role'] == 'user':
+                session['plan'] = user['plan']
             return redirect(url_for('dashboard'))
         else:
             error = 'Invalid credentials.'
     return render_template_string(LOGIN_TEMPLATE, error=error)
 
+# Dashboard route
 @app.route('/dashboard')
 def dashboard():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
-    return render_template_string(DASHBOARD_TEMPLATE)
+    if session.get('role') == 'admin':
+        return render_template_string(ADMIN_DASHBOARD_TEMPLATE)
+    else:
+        return render_template_string(
+            USER_DASHBOARD_TEMPLATE,
+            username=session.get('username'),
+            plan=session.get('plan')
+        )
 
+# Logout route
 @app.route('/logout')
 def logout():
     session.clear()
