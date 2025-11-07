@@ -77,7 +77,7 @@ LOGIN_TEMPLATE = '''
 <body>
     <div class="container">
         <h2>Affiliate Login</h2>
-        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
         <form method="post">
             <label>Username:</label><br>
             <input type="text" name="username"><br>
