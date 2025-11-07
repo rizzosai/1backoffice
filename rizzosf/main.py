@@ -29,7 +29,7 @@ LOGIN_TEMPLATE = '''
     <title>Login - RizzosAI Affiliate Backoffice</title>
     <style>
         body {
-            background: linear-gradient(90deg, #e63946 0, #ffffff 50, #457b9d 100);
+            background: linear-gradient(90deg, #e63946 0%%, #ffffff 50%%, #457b9d 100%%);
             color: #222;
             font-family: Arial, sans-serif;
             margin: 0;
@@ -54,7 +54,7 @@ LOGIN_TEMPLATE = '''
             font-weight: bold;
         }
         input[type="text"], input[type="password"] {
-            width: 100;
+            width: 100%%;
             padding: 8px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
